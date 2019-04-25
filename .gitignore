@@ -328,3 +328,12 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
+
+# Certificates
+*.pem
+
+# Arduino
+build
+
+# VSCode
+.VSCode
