@@ -15,7 +15,7 @@ steps:
       #quiet: # Optional
   - task: AzureFileCopy@3
     inputs:
-      SourcePath: '$(Build.Repository.LocalPath)'
+      SourcePath: '$(Build.Repository.LocalPath)\build\fw.zip'
       ConnectedServiceNameARM: 'Microsoft Azure Sponsorship(69e5dabf-6be7-42fd-bb83-b066e03b4052)'
       Destination: 'AzureBlob'
       StorageAccountRM: 'stodevopsiot001'
