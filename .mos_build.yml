@@ -5,7 +5,7 @@ steps:
     displayName: Mos Build
   - task: ArchiveFiles@2
     inputs:
-      #rootFolderOrFile: 'build' 
+      #rootFolderOrFile: '$(Build.BinariesDirectory)\build' 
       #includeRootFolder: true 
       archiveType: 'zip' # Options: zip, 7z, tar, wim
       #tarCompression: 'gz' # Optional. Options: gz, bz2, xz, none
@@ -13,3 +13,11 @@ steps:
       #replaceExistingArchive: true 
       #verbose: # Optional
       #quiet: # Optional
+  - task: AzureFileCopy@3
+    inputs:
+      SourcePath: '$(Build.Repository.LocalPath)'
+      ConnectedServiceNameARM: 'Microsoft Azure Sponsorship(69e5dabf-6be7-42fd-bb83-b066e03b4052)'
+      Destination: 'AzureBlob'
+      StorageAccountRM: 'stodevopsiot001'
+      ContainerName: 'devopsiot'
+      BlobPrefix: 'fw'
