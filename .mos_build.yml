@@ -1,3 +1,5 @@
-script:
-  - mos version
-  - mos build --local --clean --platform esp8266
+steps:
+  - script: mos version
+    displayName: Mos version
+  - script: mos build --local --clean --platform esp8266
+    displayName: Mos Build
