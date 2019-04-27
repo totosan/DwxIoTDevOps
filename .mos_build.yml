@@ -15,5 +15,5 @@ steps:
       #quiet: # Optional
   - task: PublishBuildArtifacts@1
     inputs:
-      PathtoPublish: '$(Build.DefaultWorkingDirectory)\build'
+      PathtoPublish: '$(Build.Repository.LocalPath)\build'
       ArtifactName: 'drop'
