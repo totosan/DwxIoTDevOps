@@ -3,3 +3,17 @@ steps:
     displayName: Mos version
   - script: mos build --clean --platform esp8266
     displayName: Mos Build
+  - task: ArchiveFiles@2
+    inputs:
+      #rootFolderOrFile: '$(Build.BinariesDirectory)\build' 
+      #includeRootFolder: true 
+      archiveType: 'zip' # Options: zip, 7z, tar, wim
+      #tarCompression: 'gz' # Optional. Options: gz, bz2, xz, none
+      #archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip' 
+      #replaceExistingArchive: true 
+      #verbose: # Optional
+      #quiet: # Optional
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Build.Repository.LocalPath)\build'
+      ArtifactName: 'drop'
