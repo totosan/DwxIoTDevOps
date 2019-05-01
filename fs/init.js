@@ -46,7 +46,7 @@ let reportState = function () {
 };
 
 // Update state every second, and report to cloud if online
-Timer.set(1000, Timer.REPEAT, function () {
+Timer.set(10000, Timer.REPEAT, function () {
     state.uptime = Sys.uptime();
     state.ram_free = Sys.free_ram();
     print('online:', online, JSON.stringify(state));
@@ -60,8 +60,7 @@ Timer.set(1000, Timer.REPEAT, function () {
       return;
     }
 
-    print('Temperature:', t, '*C');
-    print('Humidity:', h, '%');
+    print('Temperature:', t, '*C','Humidity:', h, '%');
   }, 
   null);
 
