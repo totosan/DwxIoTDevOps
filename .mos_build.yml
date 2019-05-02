@@ -16,4 +16,4 @@ steps:
   - task: PublishBuildArtifacts@1
     inputs:
       PathtoPublish: '$(Build.Repository.LocalPath)\build'
-      ArtifactName: 'drop'
+      ArtifactName: '$(Build.Repository.LocalPath)\drop.zip'
