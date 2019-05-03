@@ -17,3 +17,7 @@ steps:
     inputs:
       PathtoPublish: '$(Build.ArtifactStagingDirectory)\build'
       ArtifactName: 'drops'
+  - task: PublishPipelineArtifact@0
+    inputs:
+      artifactName: 'firmwareArtefact'
+      targetPath: 'fw'
