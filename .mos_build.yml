@@ -15,5 +15,5 @@ steps:
       #quiet: # Optional
   - task: PublishBuildArtifacts@1
     inputs:
-      PathtoPublish: '$(System.DefaultWorkingDirectory)\build\*.zip'
-      ArtifactName: '$(Build.ArtifactStagingDirectory)\drops'
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)\build'
+      ArtifactName: 'drops'
