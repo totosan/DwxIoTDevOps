@@ -5,7 +5,7 @@ steps:
     displayName: Mos Build
   - task: ArchiveFiles@2
     inputs:
-      rootFolderOrFile: '$(Build.BinariesDirectory)\build' 
+      rootFolderOrFile: '$(Build.SourcesDirectory)\build' 
       includeRootFolder: true 
       archiveType: 'zip' # Options: zip, 7z, tar, wim
       #tarCompression: 'gz' # Optional. Options: gz, bz2, xz, none
