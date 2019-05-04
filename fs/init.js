@@ -11,6 +11,7 @@ load('api_dht.js');
 
 // GPIO pin which has a DHT sensor data wire connected
 let pin = 5;
+let blinkled = 4;
 
 // Initialize DHT library
 let dht = DHT.create(pin, DHT.DHT11);
@@ -23,14 +24,17 @@ let online = false;                               // Connected to the cloud?
 let setLED = function (on) {
   let level = onhi ? on : !on;
   GPIO.write(led, level);
+  GPIO.write(blinkled, level);
   print('LED on ->', on);
 };
 
 GPIO.set_mode(led, GPIO.MODE_OUTPUT);
+GPIO.set_mode(blinkled, GPIO.MODE_OUTPUT);
 setLED(state.on);
 
 let reportState = function () {
   Shadow.update(0, state);
+
 };
 
  let sendData = function () {
