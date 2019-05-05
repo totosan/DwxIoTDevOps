@@ -8,6 +8,7 @@ load('api_shadow.js');
 load('api_timer.js');
 load('api_sys.js');
 load('api_dht.js');
+load('api_dash.js');
 
 // GPIO pin which has a DHT sensor data wire connected
 let pin = 5;
@@ -24,7 +25,6 @@ let online = false;                               // Connected to the cloud?
 let setLED = function (on) {
   let level = onhi ? on : !on;
   GPIO.write(led, level);
-  GPIO.write(blinkled, level);
   print('LED on ->', on);
 };
 
@@ -63,7 +63,7 @@ Timer.set(10000, Timer.REPEAT, function () {
       print('Failed to read data from sensor');
       return;
     }
-
+    GPIO.write(blinkled, !state.on);
     print('Temperature:', t, '*C','Humidity:', h, '%');
   }, 
   null);
