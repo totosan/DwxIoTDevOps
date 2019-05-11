@@ -1,0 +1,15 @@
+steps:
+  - script: mos version
+    displayName: Mos version
+  - script: mos build --clean --platform esp8266
+    displayName: Mos Build
+  - task: CopyFiles@2
+    inputs:
+      SourceFolder: '$(Build.SourcesDirectory)\build'
+      Contents: 'fw.zip'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)'
+      CleanTargetFolder: true
+  - task: PublishBuildArtifacts@1
+    inputs:
+#      PathtoPublish: '$(Build.ArtifactStagingDirectory)\build'
+      ArtifactName: 'drops'
