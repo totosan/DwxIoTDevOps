@@ -12,5 +12,5 @@ variables:
 
 steps:
 - script: |
-  /opt/cmd.sh
+    /opt/cmd.sh
   displayName: 'Build'
