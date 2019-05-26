@@ -1,0 +1,16 @@
+resources:
+  containers:
+  - container: pio-build
+    image: 'totosan/iot_dev:latest'
+
+pool: 'Hosted Ubuntu 1604'
+container: pio-build
+
+variables:
+  buildConfiguration: 'Release'
+  system.debug: true
+
+steps:
+- script: |
+  /opt/cmd.sh
+  displayName: 'Build'
