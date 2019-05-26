@@ -1,0 +1,1 @@
+void blinkLED(bool reverse);
