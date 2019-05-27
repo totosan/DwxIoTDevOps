@@ -15,3 +15,9 @@ steps:
     cd PlatformIO
     pio run
   displayName: 'Build'
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/build'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+  displayName: 'Pass to release'
