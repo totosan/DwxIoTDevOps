@@ -17,7 +17,7 @@ steps:
   displayName: 'Build'
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)/build'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/build/huzzah'
     ArtifactName: 'drop'
     publishLocation: 'Container'
   displayName: 'Pass to release'
