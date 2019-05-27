@@ -12,6 +12,6 @@ variables:
 
 steps:
 - script: |
-    ls -alH
-    /opt/cmd.sh
+    cd PlatformIO
+    pio run
   displayName: 'Build'
