@@ -2,7 +2,7 @@
 #define DHT_TYPE DHT11
 
 // Pin layout configuration
-#define LED_PIN 0
+#define LED_PIN 2
 #define DHT_PIN 5
 
 #define TEMPERATURE_ALERT 30
