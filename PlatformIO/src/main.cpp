@@ -19,7 +19,7 @@
 #include "iothubClient.h"
 #include "update.h"
 
-static char *SW_VERSION = "1.3";
+static char *SW_VERSION = "1.4";
 
 bool messagePending = false;
 bool messageSending = true;

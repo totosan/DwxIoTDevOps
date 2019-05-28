@@ -4,6 +4,7 @@
 // Pin layout configuration
 #define LED_PIN 2
 #define DHT_PIN 5
+#define LED_REVERSE false
 
 #define TEMPERATURE_ALERT 30
 
