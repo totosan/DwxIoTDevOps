@@ -17,7 +17,7 @@ steps:
   displayName: 'Build'
 - task: CopyFiles@2
   inputs:
-    contents: 'PlatformIO/build/huzzah/**'
+    contents: 'PlatformIO/build/huzzah/*.bin'
     targetFolder: $(Build.ArtifactStagingDirectory)
 - task: PublishBuildArtifacts@1
   inputs:
