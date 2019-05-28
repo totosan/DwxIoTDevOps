@@ -15,9 +15,13 @@ steps:
     cd PlatformIO
     pio run
   displayName: 'Build'
+- task: CopyFiles@2
+  inputs:
+    contents: 'PlatformIO/build/huzzah/*.bin'
+    targetFolder: $(Build.ArtifactStagingDirectory)
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)/build/huzzah'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'drop'
     publishLocation: 'Container'
   displayName: 'Pass to release'
