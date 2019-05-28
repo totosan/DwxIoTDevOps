@@ -21,7 +21,7 @@ steps:
     targetFolder: $(Build.ArtifactStagingDirectory)
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)/build/huzzah'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)PlatformIO/build/huzzah'
     ArtifactName: 'drop'
     publishLocation: 'Container'
   displayName: 'Pass to release'
