@@ -211,15 +211,15 @@ void twinCallback(
     }
 
     General *newGeneral = parseTwinMessage(temp);
+
     printf("assigning desired states\n");
-    printf("old to new values: \r\n");
     printf("\tversion: %s\t\t-->: %s\r\n", oldGeneral->state.version, newGeneral->state.version);
     printf("\tinterval: %i\t\t-->: %i\r\n", oldGeneral->settings.desired_interval, newGeneral->settings.desired_interval);
-    if (NULL != oldGeneral->settings.update_url)
+    if (NULL != oldGeneral->settings.update_url && strlen(newGeneral->settings.update_url) > 1  )
     {
         printf("\turl: %s\t\t-->: %s\r\n", oldGeneral->settings.update_url, newGeneral->settings.update_url);
     }
-    if (oldGeneral->settings.desired_interval != newGeneral->state.reported_interval)
+    if (oldGeneral->settings.desired_interval != newGeneral->state.reported_interval )
     {
         if (NULL == newGeneral->settings.desired_interval || newGeneral->settings.desired_interval < 500)
         {

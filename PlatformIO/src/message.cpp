@@ -98,6 +98,8 @@ General *parseTwinMessage(char *message)
     else if (root.containsKey("interval"))
     {
         general->settings.desired_interval = root["interval"];
+    }else{
+        general->settings.desired_interval = 0;
     }
 
     printf("desired interval:%i\n", general->settings.desired_interval);
@@ -110,7 +112,11 @@ General *parseTwinMessage(char *message)
     else if (root.containsKey("fwVersion"))
     {
         strcpy(general->state.version, root["fwVersion"]);
+    }else
+    {
+        strcpy(general->state.version,"\0");
     }
+    
 
     printf("version :%s\r\n", general->state.version);
 
@@ -128,7 +134,10 @@ General *parseTwinMessage(char *message)
         {
             strcpy(general->settings.update_url, (const char *)root["update_url"]);
         }
+    }else
+    {
+        strcpy(general->settings.update_url, "\0");
     }
-    printf("update url:%s sizeof %d strlen %d\r\n", general->settings.update_url, sizeof general->settings.update_url, strlen(general->settings.update_url));
+    
     return general;
 }

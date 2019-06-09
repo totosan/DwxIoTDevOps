@@ -1,5 +1,11 @@
+# PlatformIO
 .pio
 .pioenvs
 .piolibdeps
-ipch
+.BROWSE*
+
+# BUILDS
+.vscode
 build
+
+# configs
