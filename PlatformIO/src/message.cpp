@@ -22,6 +22,11 @@ float readHumidity()
     return dht.readHumidity();
 }
 
+float readPhoto(){
+    float sensorValue = analogRead(BTN_PIN);
+    Serial.println(sensorValue);
+    return sensorValue;
+}
 
 bool readMessage(int messageId, char *payload)
 {

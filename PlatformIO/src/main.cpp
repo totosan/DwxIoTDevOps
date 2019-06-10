@@ -18,6 +18,7 @@
 #include "message.h"
 #include "iothubClient.h"
 #include "update.h"
+#include "hardwareDoings.h"
 
 static char *SW_VERSION = "1.4";
 
@@ -26,6 +27,9 @@ bool messageSending = true;
 bool updatePending = false;
 bool stateReporting = false;
 bool stateSent = false;
+bool onBeep = false;
+
+int armedAlarmCount = 0;
 
 char *connectionString;
 char *ssid;
@@ -35,9 +39,12 @@ char *deviceId;
 static int interval = INTERVAL;
 static bool hasIoTHub = false;
 static bool hasWifi = false;
+static int messageCount = 1;
 
-os_timer_t myTimer;
-bool tickOccured;
+os_timer_t telemtryTimer;
+os_timer_t beeperTimer;
+bool tickSendOccured;
+bool tickBeepOccured;
 
 // declaration
 void timerCallback(void *pArg);
@@ -45,16 +52,17 @@ void user_init(void);
 void initWifi();
 void initTime();
 
-extern void reportState(General* general);
+extern void reportState(General *general);
 extern void sendMessage(IOTHUB_CLIENT_LL_HANDLE iotHubClientHandle, char *buffer, bool temperatureAlert);
 
-// start of timerCallback
-void timerCallback(void *pArg)
+void timerSendCallback(void *pArg)
 {
-
-    tickOccured = true;
-
-} // End of timerCallback
+    tickSendOccured = true;
+}
+void timerBeeperCallback(void *pArg)
+{
+    tickBeepOccured = true;
+}
 
 void user_init(void)
 {
@@ -66,10 +74,12 @@ void os_timer_setfn(
       os_timer_func_t *pFunction,
       void *pArg)
 */
-    os_timer_setfn(&myTimer, timerCallback, NULL);
-    os_timer_arm(&myTimer, 1000, true);
-} // End of user_init
+    os_timer_setfn(&telemtryTimer, timerSendCallback, NULL);
+    os_timer_arm(&telemtryTimer, interval, true);
 
+    os_timer_setfn(&beeperTimer, timerBeeperCallback, NULL);
+    os_timer_arm(&beeperTimer, 1000, true);
+} // End of user_init
 
 void initWifi()
 {
@@ -149,8 +159,9 @@ void setup()
     initTime();
     initSensor();
 
-    tickOccured = false;
-    //user_init();
+    tickSendOccured = false;
+    tickBeepOccured = false;
+    user_init();
 
     /*
      * AzureIotHub library remove AzureIoTHubClient class in 1.0.34, so we remove the code below to avoid
@@ -181,47 +192,78 @@ void setup()
     reportState(&general, iotHubClientHandle);
 }
 
-static int messageCount = 1;
+void CheckSendTickOccured()
+{
+    if (tickSendOccured == true)
+    {
+        if (!updatePending)
+        {
+            if (!messagePending && messageSending)
+            {
+                Serial.println("Message loop");
+                char messagePayload[MESSAGE_MAX_LEN];
+                bool temperatureAlert = readMessage(messageCount, messagePayload);
+                if (!temperatureAlert)
+                {
+                    sendMessage(iotHubClientHandle, messagePayload, temperatureAlert);
+                    messageCount++;
+                }
+                Serial.println("Waiting for delay");
+            }
+        }
+        else // updatePending
+        {
+            if (!stateReporting && !stateSent)
+            {
+                strcpy(general.state.update_state, "DOWNLOADING");
+                reportState(&general, iotHubClientHandle);
+                stateSent = true;
+            }
+            if (!stateReporting)
+            {
+                HandleUpdate(&general);
+                updatePending = false;
+            }
+        }
+        {
+            IoTHubClient_LL_DoWork(iotHubClientHandle);
+        }
+
+        tickSendOccured = false;
+    }
+}
+
+void CheckBeepTickOccured()
+{
+
+    if (tickBeepOccured == true)
+    {
+        int lightValue = readPhoto();
+        Serial.printf("counter for alarm %i \r\n",armedAlarmCount);
+        if (lightValue >= 150 && armedAlarmCount <= 10)
+        {
+            armedAlarmCount++;
+        }
+        else if (lightValue < 200 && armedAlarmCount > 0 && armedAlarmCount <= 10)
+        {
+            armedAlarmCount = 0;
+        }
+        if (armedAlarmCount > 10)
+        {
+            onBeep = true;
+        }
+
+        if (onBeep==true)
+        {
+            beep();
+        }
+        tickBeepOccured = false;
+    }
+}
+
 void loop()
 {
-    if (tickOccured == true)
-    {
-        Serial.println("Ticked");
-        tickOccured = false;
-    }
-
-    if (!updatePending)
-    {
-        if (!messagePending && messageSending)
-        {
-            Serial.println("Message loop");
-            char messagePayload[MESSAGE_MAX_LEN];
-            bool temperatureAlert = readMessage(messageCount, messagePayload);
-            if (!temperatureAlert)
-            {
-                sendMessage(iotHubClientHandle, messagePayload, temperatureAlert);
-                messageCount++;
-            }
-            Serial.println("Waiting for delay");
-            delay(interval);
-        }
-    }
-    else // updatePending
-    {
-        if (!stateReporting && !stateSent)
-        {
-            strcpy(general.state.update_state, "DOWNLOADING");
-            reportState(&general, iotHubClientHandle);
-            stateSent = true;
-        }
-        if (!stateReporting)
-        {
-            HandleUpdate(&general);
-            updatePending = false;
-        }
-    }
-    {
-        IoTHubClient_LL_DoWork(iotHubClientHandle);
-    }
+    CheckSendTickOccured();
+    CheckBeepTickOccured();
     delay(10);
 }

@@ -7,3 +7,7 @@ void blinkLED(bool reverse)
     delay(100);
     digitalWrite(LED_PIN, (reverse) ? LOW : HIGH);
 }
+
+void beep(){
+    tone(BEEPER_PIN, 10000,500);
+}

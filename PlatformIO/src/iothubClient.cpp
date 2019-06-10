@@ -10,6 +10,7 @@ extern bool messageSending;
 extern bool updatePending;
 extern bool stateReporting;
 extern bool stateSent;
+extern bool onBeep;
 static WiFiClientSecure sslClient; // for ESP8266
 
 const char *onSuccess = "\"Successfully invoke device method\"";
@@ -25,6 +26,29 @@ const char *notFound = "\"No method found\"";
  *    compile error
 */
 
+void start()
+{
+    Serial.println("Start sending temperature and humidity data.");
+    messageSending = true;
+}
+
+void stop()
+{
+    Serial.println("Stop sending temperature and humidity data.");
+    messageSending = false;
+}
+
+void startBeep()
+{
+    Serial.println("Started Beeping");
+    onBeep = true;
+}
+
+void stopBeep()
+{
+    Serial.println("Stopped Beeping");
+    onBeep = false;
+}
 
 static void sendCallback(IOTHUB_CLIENT_CONFIRMATION_RESULT result, void *userContextCallback)
 {
@@ -70,18 +94,6 @@ void sendMessage(IOTHUB_CLIENT_LL_HANDLE iotHubClientHandle, char *buffer, bool 
 
         IoTHubMessage_Destroy(messageHandle);
     }
-}
-
-void start()
-{
-    Serial.println("Start sending temperature and humidity data.");
-    messageSending = true;
-}
-
-void stop()
-{
-    Serial.println("Stop sending temperature and humidity data.");
-    messageSending = false;
 }
 
 IOTHUBMESSAGE_DISPOSITION_RESULT receiveMessageCallback(IOTHUB_MESSAGE_HANDLE message, void *userContextCallback)
@@ -139,6 +151,14 @@ int deviceMethodCallback(
     else if (strcmp(methodName, "stop") == 0)
     {
         stop();
+    }
+    else if (strcmp(methodName, "enableBeep") == 0)
+    {
+        startBeep();
+    }
+    else if (strcmp(methodName, "disableBeep") == 0)
+    {
+        stopBeep();
     }
     else
     {
@@ -215,11 +235,11 @@ void twinCallback(
     printf("assigning desired states\n");
     printf("\tversion: %s\t\t-->: %s\r\n", oldGeneral->state.version, newGeneral->state.version);
     printf("\tinterval: %i\t\t-->: %i\r\n", oldGeneral->settings.desired_interval, newGeneral->settings.desired_interval);
-    if (NULL != oldGeneral->settings.update_url && strlen(newGeneral->settings.update_url) > 1  )
+    if (NULL != oldGeneral->settings.update_url && strlen(newGeneral->settings.update_url) > 1)
     {
         printf("\turl: %s\t\t-->: %s\r\n", oldGeneral->settings.update_url, newGeneral->settings.update_url);
     }
-    if (oldGeneral->settings.desired_interval != newGeneral->state.reported_interval )
+    if (oldGeneral->settings.desired_interval != newGeneral->state.reported_interval)
     {
         if (NULL == newGeneral->settings.desired_interval || newGeneral->settings.desired_interval < 500)
         {
@@ -230,18 +250,18 @@ void twinCallback(
         printf("set interval: %i\n", oldGeneral->settings.desired_interval);
     }
 
-    if (strcmp(oldGeneral->state.version, newGeneral->state.version)<0)
+    if (strcmp(oldGeneral->state.version, newGeneral->state.version) < 0)
     {
         strcpy(oldGeneral->state.version, newGeneral->state.version);
         printf("should trigger update with version: %s sizeof %d strlen %d\n", oldGeneral->state.version, sizeof(oldGeneral->state.version), strlen(oldGeneral->state.version));
         updatePending = true;
     }
 
-    if (oldGeneral->settings.update_url != '\0' || strcmp(oldGeneral->settings.update_url, newGeneral->settings.update_url)!=0)
+    if (oldGeneral->settings.update_url != '\0' || strcmp(oldGeneral->settings.update_url, newGeneral->settings.update_url) != 0)
     {
         strcpy(oldGeneral->settings.update_url, newGeneral->settings.update_url);
         printf("set update url: %s\n", oldGeneral->settings.update_url);
-    } 
+    }
     //reportState(oldGeneral);
     free(temp);
     free(newGeneral);
