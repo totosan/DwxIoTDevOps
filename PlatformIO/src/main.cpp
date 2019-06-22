@@ -55,7 +55,7 @@ void user_init(void);
 void initWifi();
 void initTime();
 
-extern void reportState(General *general);
+extern void reportState(General *general, IOTHUB_CLIENT_LL_HANDLE iotHubClientHandle);
 extern void sendMessage(IOTHUB_CLIENT_LL_HANDLE iotHubClientHandle, char *buffer, bool temperatureAlert);
 
 void timerSendCallback(void *pArg)
@@ -184,6 +184,8 @@ void setup()
     general.settings.desired_interval = interval;
     general.state.doorAlerting = false;
     general.state.reported_interval = interval;
+    general.state.temperature = 0.0f;
+    general.state.humidity = 0.0f;
     strcpy(general.state.version, SW_VERSION);
     *general.state.update_state = {'\0'};
     *general.settings.update_url = {'\0'};
@@ -206,10 +208,11 @@ void CheckTelemetryIntervallOccured()
             {
                 Serial.println("Message loop");
                 char messagePayload[MESSAGE_MAX_LEN];
-                bool temperatureAlert = readMessage(messageCount, messagePayload);
+                bool temperatureAlert = readMessage(messageCount, messagePayload, &general);
                 if (!temperatureAlert)
                 {
                     sendMessage(iotHubClientHandle, messagePayload, temperatureAlert);
+                    reportState(&general, iotHubClientHandle);
                     messageCount++;
                 }
                 Serial.println("Waiting for delay");

@@ -28,7 +28,7 @@ float readPhoto(){
     return sensorValue;
 }
 
-bool readMessage(int messageId, char *payload)
+bool readMessage(int messageId, char *payload, General *general)
 {
     float temperature = readTemperature();
     float humidity = readHumidity();
@@ -45,6 +45,7 @@ bool readMessage(int messageId, char *payload)
     else
     {
         root["temperature"] = temperature;
+        general->state.temperature = temperature;
     }
 
     if (std::isnan(humidity))
@@ -54,6 +55,7 @@ bool readMessage(int messageId, char *payload)
     else
     {
         root["humidity"] = humidity;
+        general->state.humidity = humidity;
     }
     serializeJson(root, payload, MESSAGE_MAX_LEN);
     printf("Payload: %s\r\n\0", payload);
@@ -71,6 +73,8 @@ char *getSerializedMessage(General *general)
     root["update_url"] = general->settings.update_url;
     root["device"]["heap_free"] = ESP.getFreeHeap();
     root["device"]["sketch_free"] = ESP.getFreeSketchSpace();
+    root["device"]["temperature"] = general->state.temperature;
+    root["device"]["humidity"] = general->state.humidity;
     serializeJson(root, payload, (size_t)MESSAGE_MAX_LEN);
     return payload;
 }
