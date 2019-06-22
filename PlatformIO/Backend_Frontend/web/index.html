@@ -12,7 +12,10 @@
     <div class="esp32" id="esp" v-cloak>
         <div class="screen"></div>
 
-        <div class="info" v-show="lastUpdated !== '' && this.reportedTwin.restarted">
+        <div class="info" v-show="lastUpdated !== ''">
+            <div class="device_telemetry">
+                <p>{{ reportedTwin.device.temperature || 'N/A' }}&deg;C  {{ reportedTwin.device.humidity || 'N/A' }}%</p>
+            </div>
             <div class="device_state">
                 <p>Heap: {{ reportedTwin.device.heap_free || 'N/A' }}</p>
                 <p>Firmwareversion: {{ reportedTwin.fwVersion || 'N/A' }}</p>

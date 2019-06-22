@@ -162,6 +162,18 @@ body {
     border-bottom: green 1px dashed;
 }
 
+.esp32 .info .device_telemetry {
+    position: absolute;
+    font-size: 14px;
+    bottom: 35%;
+    left: 15%;
+    background-color: #f3e9a8;
+    border: 1px #e0d79e solid;
+    margin-left: 10%;
+    margin-right: 10%;
+    padding: 5px;
+}
+
 .esp32 .info .device_state {
     position: absolute;
     font-size: 8px;
