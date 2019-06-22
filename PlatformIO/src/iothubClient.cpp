@@ -10,7 +10,6 @@ extern bool messageSending;
 extern bool updatePending;
 extern bool stateReporting;
 extern bool stateSent;
-extern bool onBeep;
 static WiFiClientSecure sslClient; // for ESP8266
 
 const char *onSuccess = "\"Successfully invoke device method\"";
@@ -36,18 +35,6 @@ void stop()
 {
     Serial.println("Stop sending temperature and humidity data.");
     messageSending = false;
-}
-
-void startBeep()
-{
-    Serial.println("Started Beeping");
-    onBeep = true;
-}
-
-void stopBeep()
-{
-    Serial.println("Stopped Beeping");
-    onBeep = false;
 }
 
 static void sendCallback(IOTHUB_CLIENT_CONFIRMATION_RESULT result, void *userContextCallback)
@@ -151,14 +138,6 @@ int deviceMethodCallback(
     else if (strcmp(methodName, "stop") == 0)
     {
         stop();
-    }
-    else if (strcmp(methodName, "enableBeep") == 0)
-    {
-        startBeep();
-    }
-    else if (strcmp(methodName, "disableBeep") == 0)
-    {
-        stopBeep();
     }
     else
     {

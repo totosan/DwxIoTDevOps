@@ -27,11 +27,6 @@ bool messageSending = true;
 bool updatePending = false;
 bool stateReporting = false;
 bool stateSent = false;
-bool onBeep = false;
-
-int armedAlarmCount = 0;
-static int maxLightValue = 100;
-static int minLightValue = 20;
 
 char *connectionString;
 char *ssid;
@@ -44,9 +39,7 @@ static bool hasWifi = false;
 static int messageCount = 1;
 
 os_timer_t telemtryTimer;
-os_timer_t beeperTimer;
 bool IsTelemetryEvent;
-bool IsDoorAlertEvent;
 
 // declaration
 void timerCallback(void *pArg);
@@ -60,10 +53,6 @@ extern void sendMessage(IOTHUB_CLIENT_LL_HANDLE iotHubClientHandle, char *buffer
 void timerSendCallback(void *pArg)
 {
     IsTelemetryEvent = true;
-}
-void timerBeeperCallback(void *pArg)
-{
-    IsDoorAlertEvent = true;
 }
 
 void user_init(void)
@@ -79,8 +68,6 @@ void os_timer_setfn(
     os_timer_setfn(&telemtryTimer, timerSendCallback, NULL);
     os_timer_arm(&telemtryTimer, interval, true);
 
-    os_timer_setfn(&beeperTimer, timerBeeperCallback, NULL);
-    os_timer_arm(&beeperTimer, 1000, true);
 } // End of user_init
 
 void initWifi()
@@ -88,23 +75,6 @@ void initWifi()
     // Attempt to connect to Wifi network:
     Serial.printf("Attempting to connect to SSID: %s.\r\n", ssid);
 
-#ifndef newWifiWay
-    // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
-    WiFi.begin(ssid, pass);
-    while (WiFi.status() != WL_CONNECTED)
-    {
-        // Get Mac Address and show it.
-        // WiFi.macAddress(mac) save the mac address into a six length array, but the endian may be different. The huzzah board should
-        // start from mac[0] to mac[5], but some other kinds of board run in the oppsite direction.
-        uint8_t mac[6];
-        WiFi.macAddress(mac);
-        Serial.printf("You device with MAC address %02x:%02x:%02x:%02x:%02x:%02x connects to %s failed! Waiting 10 seconds to retry.\r\n",
-                      mac[0], mac[1], mac[2], mac[3], mac[4], mac[5], ssid);
-        WiFi.begin(ssid, pass);
-        delay(10000);
-    }
-    Serial.printf("Connected to wifi %s.\r\n", ssid);
-#else
     delay(10);
     WiFi.mode(WIFI_AP);
     WiFi.begin(ssid, pass);
@@ -120,7 +90,6 @@ void initWifi()
     Serial.println("IP address: ");
     Serial.println(WiFi.localIP());
     Serial.println(" > IoT Hub");
-#endif
 }
 
 void initTime()
@@ -162,7 +131,6 @@ void setup()
     initSensor();
 
     IsTelemetryEvent = false;
-    IsDoorAlertEvent = false;
     user_init();
 
     /*
@@ -235,45 +203,8 @@ void CheckTelemetryIntervallOccured()
     }
 }
 
-void CheckDoorAlert()
-{
-
-    if (IsDoorAlertEvent == true)
-    {
-        int lightValue = readPhoto();
-        Serial.printf("Light: %i counter: %i \r\n", lightValue, armedAlarmCount);
-        if (lightValue >= maxLightValue && armedAlarmCount <= 10)
-        {
-            armedAlarmCount++;
-        }
-        else if (lightValue < maxLightValue && armedAlarmCount > 0 && armedAlarmCount <= 10)
-        {
-            armedAlarmCount = 0;
-        }
-
-        if (lightValue < minLightValue && onBeep == true)
-        {
-            onBeep = false;
-            armedAlarmCount = 0;
-        }
-
-        if (armedAlarmCount > 10)
-        {
-            armedAlarmCount = 0;
-            onBeep = true;
-        }
-
-        if (onBeep == true)
-        {
-            beep();
-        }
-        IsDoorAlertEvent = false;
-    }
-}
-
 void loop()
 {
     CheckTelemetryIntervallOccured();
-    CheckDoorAlert();
     delay(10);
 }
