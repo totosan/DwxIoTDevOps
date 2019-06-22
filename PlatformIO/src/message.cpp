@@ -67,6 +67,7 @@ char *getSerializedMessage(General *general)
     root["interval"] = general->state.reported_interval;
     root["fwVersion"] = general->state.version;
     root["update_state"] = general->state.update_state;
+    root["doorAlerting"] = general->state.doorAlerting;
     root["update_url"] = general->settings.update_url;
     root["device"]["heap_free"] = ESP.getFreeHeap();
     root["device"]["sketch_free"] = ESP.getFreeSketchSpace();

@@ -10,7 +10,8 @@ function init() {
                     "sketch_free": 0
                 },
                 "fwVersion":'',
-                "update_state":''
+                "update_state":'',
+                "doorAlerting":false
             },
             deviceId:'Buro',
             lastUpdated: '',
@@ -52,7 +53,7 @@ function getState() {
     }
     this.functionAppNameSet = true;
     this.loading = true;
-    setInterval(this.getTwin, 1000);
+    setInterval(this.getTwin, 500);
 }
 
 function deviceRestart(){
@@ -63,6 +64,7 @@ function deviceRestart(){
 function deviceDisableAlarm(){
     var url = `https://${this.functionAppName}.azurewebsites.net/api/device-state?action=disableBeep`;
     this.$http.jsonp(url);
+    this.doorAlerting = false;
 }
 
 init();

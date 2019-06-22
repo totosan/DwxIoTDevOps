@@ -178,6 +178,14 @@ body {
     left: 22%;
 }
 
+.esp32 .door_alert {
+    position: absolute;
+    font-size: 24px;
+    bottom: 43%;
+    left: 22%;
+    color: red;
+}
+
 .esp32 .inpt_box {
     width: 600px;
     height: 100px;

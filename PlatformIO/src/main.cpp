@@ -32,6 +32,7 @@ bool onBeep = false;
 int armedAlarmCount = 0;
 static int maxLightValue = 100;
 static int minLightValue = 20;
+static int alarmTriggerCount = 6;
 
 char *connectionString;
 char *ssid;
@@ -181,6 +182,7 @@ void setup()
 
     memset(&general, 0, sizeof(General));
     general.settings.desired_interval = interval;
+    general.state.doorAlerting = false;
     general.state.reported_interval = interval;
     strcpy(general.state.version, SW_VERSION);
     *general.state.update_state = {'\0'};
@@ -241,26 +243,32 @@ void CheckDoorAlert()
     if (IsDoorAlertEvent == true)
     {
         int lightValue = readPhoto();
-        Serial.printf("Light: %i counter: %i \r\n", lightValue, armedAlarmCount);
-        if (lightValue >= maxLightValue && armedAlarmCount <= 10)
+        //Serial.printf("Light: %i counter: %i \r\n", lightValue, armedAlarmCount);
+        if (lightValue >= maxLightValue && armedAlarmCount <= alarmTriggerCount)
         {
             armedAlarmCount++;
         }
-        else if (lightValue < maxLightValue && armedAlarmCount > 0 && armedAlarmCount <= 10)
+        else if (lightValue < maxLightValue && armedAlarmCount > 0 && armedAlarmCount <= alarmTriggerCount)
         {
             armedAlarmCount = 0;
         }
 
         if (lightValue < minLightValue && onBeep == true)
-        {
+        {// stop door alert
             onBeep = false;
             armedAlarmCount = 0;
+            general.state.doorAlerting = false;
+            reportState(&general, iotHubClientHandle);
+            IoTHubClient_LL_DoWork(iotHubClientHandle);
         }
 
-        if (armedAlarmCount > 10)
-        {
+        if (armedAlarmCount > alarmTriggerCount)
+        {// arm door alert
             armedAlarmCount = 0;
             onBeep = true;
+            general.state.doorAlerting = true;
+            reportState(&general, iotHubClientHandle);
+            IoTHubClient_LL_DoWork(iotHubClientHandle);
         }
 
         if (onBeep == true)
