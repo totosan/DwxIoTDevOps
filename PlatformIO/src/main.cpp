@@ -180,6 +180,8 @@ void setup()
     memset(&general, 0, sizeof(General));
     general.settings.desired_interval = interval;
     general.state.reported_interval = interval;
+    general.state.temperature = 0.0f;
+    general.state.humidity = 0.0f;
     strcpy(general.state.version, SW_VERSION);
     *general.state.update_state = {'\0'};
     *general.settings.update_url = {'\0'};
@@ -202,10 +204,11 @@ void CheckSendTickOccured()
             {
                 Serial.println("Message loop");
                 char messagePayload[MESSAGE_MAX_LEN];
-                bool temperatureAlert = readMessage(messageCount, messagePayload);
+                bool temperatureAlert = readMessage(messageCount, messagePayload, &general);
                 if (!temperatureAlert)
                 {
                     sendMessage(iotHubClientHandle, messagePayload, temperatureAlert);
+                    reportState(&general, iotHubClientHandle);
                     messageCount++;
                 }
                 Serial.println("Waiting for delay");
@@ -239,7 +242,7 @@ void CheckBeepTickOccured()
     if (tickBeepOccured == true)
     {
         int lightValue = readPhoto();
-        Serial.printf("counter for alarm %i \r\n",armedAlarmCount);
+        Serial.printf("counter for alarm %i \r\n", armedAlarmCount);
         if (lightValue >= 150 && armedAlarmCount <= 10)
         {
             armedAlarmCount++;
@@ -253,7 +256,7 @@ void CheckBeepTickOccured()
             onBeep = true;
         }
 
-        if (onBeep==true)
+        if (onBeep == true)
         {
             beep();
         }

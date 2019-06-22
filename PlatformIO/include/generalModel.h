@@ -7,6 +7,8 @@ typedef struct GENERAL_STATE_TAG
     char version[10];
     int reported_interval;
     char update_state[URL_MAX_LENGTH];
+    float temperature;
+    float humidity;
 } GeneralState;
 
 typedef struct GENERAL_SETTINGS_TAG
