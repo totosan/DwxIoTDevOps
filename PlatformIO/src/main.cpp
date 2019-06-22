@@ -30,6 +30,8 @@ bool stateSent = false;
 bool onBeep = false;
 
 int armedAlarmCount = 0;
+static int maxLightValue = 100;
+static int minLightValue = 20;
 
 char *connectionString;
 char *ssid;
@@ -43,8 +45,8 @@ static int messageCount = 1;
 
 os_timer_t telemtryTimer;
 os_timer_t beeperTimer;
-bool tickSendOccured;
-bool tickBeepOccured;
+bool IsTelemetryEvent;
+bool IsDoorAlertEvent;
 
 // declaration
 void timerCallback(void *pArg);
@@ -57,11 +59,11 @@ extern void sendMessage(IOTHUB_CLIENT_LL_HANDLE iotHubClientHandle, char *buffer
 
 void timerSendCallback(void *pArg)
 {
-    tickSendOccured = true;
+    IsTelemetryEvent = true;
 }
 void timerBeeperCallback(void *pArg)
 {
-    tickBeepOccured = true;
+    IsDoorAlertEvent = true;
 }
 
 void user_init(void)
@@ -159,8 +161,8 @@ void setup()
     initTime();
     initSensor();
 
-    tickSendOccured = false;
-    tickBeepOccured = false;
+    IsTelemetryEvent = false;
+    IsDoorAlertEvent = false;
     user_init();
 
     /*
@@ -192,9 +194,9 @@ void setup()
     reportState(&general, iotHubClientHandle);
 }
 
-void CheckSendTickOccured()
+void CheckTelemetryIntervallOccured()
 {
-    if (tickSendOccured == true)
+    if (IsTelemetryEvent == true)
     {
         if (!updatePending)
         {
@@ -229,41 +231,49 @@ void CheckSendTickOccured()
             IoTHubClient_LL_DoWork(iotHubClientHandle);
         }
 
-        tickSendOccured = false;
+        IsTelemetryEvent = false;
     }
 }
 
-void CheckBeepTickOccured()
+void CheckDoorAlert()
 {
 
-    if (tickBeepOccured == true)
+    if (IsDoorAlertEvent == true)
     {
         int lightValue = readPhoto();
-        Serial.printf("counter for alarm %i \r\n",armedAlarmCount);
-        if (lightValue >= 150 && armedAlarmCount <= 10)
+        Serial.printf("Light: %i counter: %i \r\n", lightValue, armedAlarmCount);
+        if (lightValue >= maxLightValue && armedAlarmCount <= 10)
         {
             armedAlarmCount++;
         }
-        else if (lightValue < 200 && armedAlarmCount > 0 && armedAlarmCount <= 10)
+        else if (lightValue < maxLightValue && armedAlarmCount > 0 && armedAlarmCount <= 10)
         {
             armedAlarmCount = 0;
         }
+
+        if (lightValue < minLightValue && onBeep == true)
+        {
+            onBeep = false;
+            armedAlarmCount = 0;
+        }
+
         if (armedAlarmCount > 10)
         {
+            armedAlarmCount = 0;
             onBeep = true;
         }
 
-        if (onBeep==true)
+        if (onBeep == true)
         {
             beep();
         }
-        tickBeepOccured = false;
+        IsDoorAlertEvent = false;
     }
 }
 
 void loop()
 {
-    CheckSendTickOccured();
-    CheckBeepTickOccured();
+    CheckTelemetryIntervallOccured();
+    CheckDoorAlert();
     delay(10);
 }

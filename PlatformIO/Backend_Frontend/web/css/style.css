@@ -75,8 +75,13 @@ body {
     position: absolute;
     left: 15%;
     top: 87%;
-    background-color: orange
+    background-color: orange;
+    cursor: pointer;
+    padding-top: 10px;
+    font-size: 10pt;
+    text-align: center;
 }
+
 
 .esp32 .buttonB{
     border-radius: 20px;

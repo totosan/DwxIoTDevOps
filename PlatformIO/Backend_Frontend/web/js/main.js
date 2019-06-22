@@ -2,7 +2,7 @@ function init() {
     var app = new Vue({
         el: '#esp',
         data: {
-            functionAppName: '',
+            functionAppName: 'dwx-device-states',
             reportedTwin: {
                 "device":{
                     "heap_free":0,
@@ -24,6 +24,7 @@ function init() {
         },
         methods: {
             deviceRestart: deviceRestart,
+            deviceDisableAlarm: deviceDisableAlarm,
             getTwin: getTwin,
             getState: getState
         }
@@ -59,5 +60,9 @@ function deviceRestart(){
     this.$http.jsonp(url);
 }
 
+function deviceDisableAlarm(){
+    var url = `https://${this.functionAppName}.azurewebsites.net/api/device-state?action=disableBeep`;
+    this.$http.jsonp(url);
+}
 
 init();

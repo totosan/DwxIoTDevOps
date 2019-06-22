@@ -24,7 +24,7 @@ float readHumidity()
 
 float readPhoto(){
     float sensorValue = analogRead(BTN_PIN);
-    Serial.println(sensorValue);
+    //Serial.println(sensorValue);
     return sensorValue;
 }
 

@@ -46,6 +46,13 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
         log.Verbose(methodResponse.GetPayloadAsJson());
         response = new HttpResponseMessage(HttpStatusCode.OK);
     }
+    else if (action == "disableBeep")
+    {
+        var methodInvocation = new CloudToDeviceMethod("disableBeep") { ResponseTimeout = TimeSpan.FromSeconds(30) };
+        var methodResponse = await serviceClient.InvokeDeviceMethodAsync(deviceName, methodInvocation);
+        log.Verbose(methodResponse.GetPayloadAsJson());
+        response = new HttpResponseMessage(HttpStatusCode.OK);
+    }
     else
     {
         response = new HttpResponseMessage(HttpStatusCode.BadRequest);
