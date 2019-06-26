@@ -139,7 +139,7 @@ int deviceMethodCallback(
         printf("userContextCallback is NULL\n");
         return 0;
     }
-
+ 
     Serial.printf("Try to invoke method %s.\r\n", methodName);
     const char *responseMessage = onSuccess;
     int result = 200;
