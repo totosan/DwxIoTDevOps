@@ -20,7 +20,7 @@
 #include "update.h"
 #include "hardwareDoings.h"
 
-static char *SW_VERSION = "1.4";
+static char *SW_VERSION = "1.5";
 
 bool messagePending = false;
 bool messageSending = true;
