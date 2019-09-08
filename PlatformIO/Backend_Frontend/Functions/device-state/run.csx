@@ -13,7 +13,7 @@ static ServiceClient serviceClient;
 static string connectionString = "HostName=iotHubMvpHandsOn.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=Xw0BYl1T4pwfVkQkFOb8AZlKtxhpgV31k1XCbJjQEmM=";
 
 // Modify the device name for your environment
-static string deviceName = "Buro";
+static string deviceName = "Fridge1";
 
 public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceWriter log)
 {
