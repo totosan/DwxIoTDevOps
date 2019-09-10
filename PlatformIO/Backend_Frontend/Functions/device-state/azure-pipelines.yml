@@ -7,7 +7,7 @@ variables:
   azureSubscription: 'MVP 20k (69e5dabf-6be7-42fd-bb83-b066e03b4052)'
   
   # Web app name
-  webAppName: 'fridge-device-state-web'
+  webAppName: 'fridge-device-state'
 
   # Working Directory
   workingDirectory: 'PlatformIO\Backend_Frontend\Functions\device-state'
