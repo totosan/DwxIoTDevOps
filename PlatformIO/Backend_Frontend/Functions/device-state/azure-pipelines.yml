@@ -4,7 +4,7 @@
 
 variables:
   # Azure Resource Manager connection
-  azureSubscription: 'ed62386f-8907-4cb7-ac1c-fdec33205963'
+  azureSubscription: 'MVP 20k (69e5dabf-6be7-42fd-bb83-b066e03b4052)'
   
   # Web app name
   webAppName: 'fridge-device-state-web'
