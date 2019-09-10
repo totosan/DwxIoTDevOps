@@ -1,7 +1,7 @@
 # Starter template for Azure functions build for {{language}} {{appType}}
 variables:
-  azureSubscription: '69e5dabf-6be7-42fd-bb83-b066e03b4052'
-  functionappName: 'dwx-device-state'
+  azureSubscription: 'MVP 20k (69e5dabf-6be7-42fd-bb83-b066e03b4052)'
+  functionappName: 'dwx-device-states'
 
 pool:
   vmImage: 'VS2017-Win2016'
