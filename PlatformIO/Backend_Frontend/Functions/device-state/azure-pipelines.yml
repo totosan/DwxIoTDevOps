@@ -10,7 +10,7 @@ variables:
   webAppName: 'fridge-device-state'
 
   # Working Directory
-  workingDirectory: 'PlatformIO\Backend_Frontend\Functions\device-state'
+  workingDirectory: 'PlatformIO\Backend_Frontend\Functions'
 
 stages:
 - stage: Build
