@@ -1,7 +1,7 @@
 # Starter template for Azure functions build for {{language}} {{appType}}
 variables:
-  azureSubscription: '{ARM ACCESS TOKEN NAME}'
-  functionappName: '{NAME OF FUNCTIONAPP}'
+  azureSubscription: 'MVP 20k'
+  functionappName: 'dwx-device-state'
 
 pool:
   vmImage: 'VS2017-Win2016'
