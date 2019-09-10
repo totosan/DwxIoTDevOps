@@ -2,7 +2,7 @@ function init() {
     var app = new Vue({
         el: '#esp',
         data: {
-            functionAppName: 'fridge-device-states',
+            functionAppName: 'fridge-device-state',
             reportedTwin: {
                 "device": {
                     "heap_free": 0,
