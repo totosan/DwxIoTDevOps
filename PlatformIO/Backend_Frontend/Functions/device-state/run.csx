@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 
 static RegistryManager registryManager;
 static ServiceClient serviceClient;
-static string connectionString = "HostName=iotHubMvpHandsOn.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=Xw0BYl1T4pwfVkQkFOb8AZlKtxhpgV31k1XCbJjQEmM=";
+static string connectionString = "HostName=iotHubMvpHandsOn.azure-devices.net;SharedAccessKeyName=AppDevStates;SharedAccessKey=8r9IcVFDJc3JGCURhp5bO9spxsjI+V/wO8ASXrbHcsQ=";
 
 // Modify the device name for your environment
 static string deviceName = "Fridge1";

@@ -6,7 +6,7 @@ trigger:
 
 variables:
   # Azure Resource Manager connection
-  azureSubscription: '6b8b83e4-3973-49b5-9ee0-c6a36bd09fff'
+  azureSubscription: 'MVP 20k (69e5dabf-6be7-42fd-bb83-b066e03b4052)'
   
   # Web app name
   webAppName: 'fridge-device-state-web'
