@@ -22,11 +22,21 @@ stages:
       vmImage: 'vs2017-win2016'
 
     steps:
-
+    - script: |
+        dotnet restore
+        dotnet build --configuration Release
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: publish
+        arguments: '--configuration Release --output publish_output'
+        projects: '*.csproj'
+        publishWebProjects: false
+        modifyOutputPath: true
+        zipAfterPublish: false
     - task: ArchiveFiles@2
       displayName: 'Archive files'
       inputs:
-        rootFolderOrFile: $(workingDirectory)
+        rootFolderOrFile: "$(System.DefaultWorkingDirectory)/publish_output/s"
         includeRootFolder: false
         archiveType: zip
         archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
@@ -50,7 +60,7 @@ stages:
         deploy:
           steps:
           - task: AzureWebApp@1
-            displayName: 'Azure Web App Deploy'
+            displayName: 'Azure Function Deploy'
             inputs:
               azureSubscription: $(azureSubscription)
               appType: webApp
