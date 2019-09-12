@@ -29,6 +29,7 @@ stages:
     - task: DotNetCoreCLI@2
       inputs:
         command: publish
+        workingDirectory: $(workingDirectory)
         arguments: '--configuration Release --output publish_output'
         projects: '*.csproj'
         publishWebProjects: false
