@@ -28,13 +28,12 @@ stages:
         dotnet build --configuration Release
     - task: DotNetCoreCLI@2
       inputs:
-        command: publish
-        workingDirectory: $(workingDirectory)
-        arguments: '--configuration Release --output publish_output'
-        projects: '*.csproj'
+        command: 'publish'
         publishWebProjects: false
-        modifyOutputPath: true
+        projects: '*.csproj'
+        arguments: '--configuration Release --output publish_output'
         zipAfterPublish: false
+        workingDirectory: '$(System.DefaultWorkingDirectory)'
     - task: ArchiveFiles@2
       displayName: 'Archive files'
       inputs:
