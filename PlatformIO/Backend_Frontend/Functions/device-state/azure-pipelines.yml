@@ -23,6 +23,7 @@ stages:
 
     steps:
     - script: |
+        dir
         dotnet restore
         dotnet build --configuration Release
     - task: DotNetCoreCLI@2
