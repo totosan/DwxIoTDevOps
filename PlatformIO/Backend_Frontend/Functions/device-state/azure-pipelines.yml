@@ -30,7 +30,7 @@ stages:
       inputs:
         command: 'publish'
         publishWebProjects: false
-        projects: '*.csproj'
+        projects: '**/Functions.csproj'
         arguments: '--configuration Release --output publish_output'
         zipAfterPublish: false
         workingDirectory: '$(System.DefaultWorkingDirectory)'
