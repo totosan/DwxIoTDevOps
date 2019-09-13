@@ -3,7 +3,7 @@ resources:
   - container: pio-build
     image: 'totosan/iot_dev:latest'
 
-pool: 'Hosted Ubuntu 1604'
+pool: 'default'
 container: pio-build
 
 variables:
