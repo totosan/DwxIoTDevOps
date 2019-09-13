@@ -9,5 +9,8 @@ void blinkLED(bool reverse)
 }
 
 void beep(){
-    tone(BEEPER_PIN, 10000,500);
+    //tone(BEEPER_PIN, 10000,500);
+    digitalWrite(BEEPER_PIN,HIGH);
+    delay(500);
+    digitalWrite(BEEPER_PIN,LOW);
 }
