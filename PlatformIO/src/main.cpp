@@ -153,6 +153,7 @@ static General general;
 void setup()
 {
     pinMode(LED_PIN, OUTPUT);
+    pinMode(BEEPER_PIN, OUTPUT);
 
     initSerial();
     delay(2000);
