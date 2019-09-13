@@ -11,11 +11,12 @@ function init() {
                     "temperature": 0.0,
                     "humidity": 0.0
                 },
+                "restarted":false,
                 "fwVersion": '',
                 "update_state": '',
                 "doorAlerting":false
             },  
-            deviceId:'Buro',
+            deviceId:'Fridge1',
             lastUpdated: '',
             stateUpdateEndpoint: 'about:blank',
             loading: false,
