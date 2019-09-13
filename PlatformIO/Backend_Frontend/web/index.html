@@ -40,7 +40,7 @@
         <div class="door_alert" v-show="this.reportedTwin.doorAlerting">
             <p>Door open!</p>
         </div>
-        <div class="connection_status" v-show="!loading && !this.reportedTwin.restarted">
+        <div class="connection_status" v-show="!loading && this.reportedTwin.update_state!=''">
             <p>Restart...</p>
         </div>
         <div class="inpt_box" v-show="!functionAppNameSet">
