@@ -37,12 +37,12 @@
         <div class="connection_status" v-show="loading">
             <p>Loading...</p>
         </div>
-        <div class="door_alert" v-show="this.reportedTwin.doorAlerting">
+   <!--     <div class="door_alert" v-show="this.reportedTwin.doorAlerting">
             <p>Door open!</p>
         </div>
         <div class="connection_status" v-show="!loading && this.reportedTwin.update_state!=''">
             <p>Restart...</p>
-        </div>
+        </div>-->
         <div class="inpt_box" v-show="!functionAppNameSet">
             <input type="text" spellcheck="false" v-model="functionAppName" placeholder="Function App Name"><button
                 v-on:click="getState()">Connect</button>
