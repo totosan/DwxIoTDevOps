@@ -286,6 +286,6 @@ void CheckDoorAlert()
 void loop()
 {
     CheckTelemetryIntervallOccured();
-    CheckDoorAlert();
+    CheckDoorAlert(); // <-- CIM COde
     delay(10);
 }
