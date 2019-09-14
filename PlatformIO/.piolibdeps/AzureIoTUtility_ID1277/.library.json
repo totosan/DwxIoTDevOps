@@ -1,0 +1,41 @@
+{
+    "name": "AzureIoTUtility", 
+    "version": "1.0.46", 
+    "keywords": [
+        "communication"
+    ], 
+    "description": "Azure C shared utility library for Arduino. For the Arduino MKR1000 or Zero and WiFi Shield 101, Adafruit Huzzah and Feather M0, or SparkFun Thing.", 
+    "frameworks": [
+        "arduino"
+    ], 
+    "platforms": [
+        "atmelsam", 
+        "espressif8266", 
+        "espressif32"
+    ], 
+    "authors": [
+        {
+            "email": "iotcert@microsoft.com", 
+            "url": null, 
+            "maintainer": true, 
+            "name": "Microsoft"
+        }
+    ], 
+    "repository": {
+        "type": "git", 
+        "url": "https://github.com/Azure/azure-iot-arduino-utility"
+    }, 
+    "homepage": null, 
+    "export": {
+        "include": null, 
+        "exclude": [
+            "extras", 
+            "docs", 
+            "tests", 
+            "test", 
+            "*.doxyfile", 
+            "*.pdf"
+        ]
+    }, 
+    "id": 1277
+}
