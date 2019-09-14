@@ -8,7 +8,7 @@ container: pio-build
 
 variables:
   buildConfiguration: 'Release'
-  system.debug: true
+  system.debug: false
 
 steps:
 - script: |
