@@ -81,7 +81,7 @@ void os_timer_setfn(
     os_timer_arm(&telemtryTimer, interval, true);
 
     os_timer_setfn(&beeperTimer, timerBeeperCallback, NULL);
-    os_timer_arm(&beeperTimer, 1000, true);
+    os_timer_arm(&beeperTimer, 1100, true);
 } // End of user_init
 
 void initWifi()
@@ -165,7 +165,6 @@ void setup()
 
     IsTelemetryEvent = false;
     IsDoorAlertEvent = false;
-    user_init();
 
     /*
      * AzureIotHub library remove AzureIoTHubClient class in 1.0.34, so we remove the code below to avoid
@@ -197,6 +196,7 @@ void setup()
     IoTHubClient_LL_SetDeviceTwinCallback(iotHubClientHandle, twinCallback, &general);
 
     reportState(&general, iotHubClientHandle);
+    user_init();
 }
 
 void CheckTelemetryIntervallOccured()
@@ -257,7 +257,7 @@ void CheckDoorAlert()
             armedAlarmCount = 0;
         }
 
-        if (lightValue < minLightValue && onBeep == true)
+        if (lightValue < minLightValue && general.state.doorAlerting == true)
         {// stop door alert
             onBeep = false;
             armedAlarmCount = 0;
